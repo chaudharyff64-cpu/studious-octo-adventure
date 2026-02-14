@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For You ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --secondary-pink: #ff85a1;
+            --soft-white: rgba(255, 255, 255, 0.9);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 200vh;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Initial Overlay */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #ff758c, #ff4d6d);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.6s ease;
+        }
+
+        .section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        /* Enhanced Glassmorphism Container */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px 20px;
+            margin: 20px auto;
+            width: 95%;
+            max-width: 600px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Large Photo Section */
+        img.profile-img {
+            width: 90%;
+            max-width: 450px;
+            height: auto;
+            aspect-ratio: 4 / 5; /* Great for portrait photos */
+            object-fit: cover;
+            border-radius: 25px;
+            border: 8px solid var(--soft-white);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        img.profile-img:hover {
+            transform: scale(1.02) rotate(1deg);
+        }
+
+        #text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            min-height: 80px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Surprise Section Styling */
+        canvas {
+            background: #1a1a2e;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 15px 45px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #yesBtn {
+            background-color: #fff;
+            color: var(--primary-pink);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn:hover { transform: scale(1.1); box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
+
+        #noBtn {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .heart-particle {
+            position: fixed;
+            top: -50px;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        
+        .hidden { display: none !important; opacity: 0; }
+        .cursor { display: inline-block; width: 3px; height: 1.2em; background: white; margin-left: 5px; animation: blink 0.8s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+    </style>
+</head>
+<body>
+
+    <div id="overlay" onclick="startExperience()">
+        <div style="font-size: 80px; animation: pulse 1.5s infinite;">🎁</div>
+        <h1 style="margin-top: 20px;">Click to Unbox</h1>
+        <p style="opacity: 0.8;">Turn up your volume! 🎵</p>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="mm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="section" id="main">
+        <div class="glass-card">
+            <img src="m.jpg" alt="Valentine" class="profile-img">
+            <div id="text"></div>
+        </div>
+    </div>
+
+    <div class="section hidden" id="surprise">
+        <canvas id="c" width="800" height="400"></canvas>
+        <h2 style="margin-top: 30px; font-size: 2rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.2);">Will you be my Valentine? ❤️</h2>
+        
+        <div class="btn-container">
+            <button class="btn" id="yesBtn" onclick="celebrate()">YES!</button>
+            <button class="btn" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        const message = "You are the most beautiful part of my day... ❤️ \n\nI have a special question for you.";
+        let i = 0;
+        const textElement = document.getElementById("text");
+        const music = document.getElementById("bgMusic");
+
+        function startExperience() {
+            document.getElementById("overlay").style.opacity = "0";
+            setTimeout(() => document.getElementById("overlay").classList.add("hidden"), 600);
+            music.play();
+            typeWriter();
+            setInterval(createHeart, 350);
+        }
+
+        function typeWriter() {
+            if (i < message.length) {
+                if (message.charAt(i) === "\n") textElement.innerHTML += "<br>";
+                else textElement.innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeWriter, 55);
+            } else {
+                textElement.innerHTML += '<span class="cursor"></span>';
+                setTimeout(showProposal, 2500);
+            }
+        }
+
+        function showProposal() {
+            const surprise = document.getElementById("surprise");
+            surprise.classList.remove("hidden");
+            surprise.style.opacity = "1";
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+            state = "walk";
+            loop();
+        }
+
+        // --- Interactive Button Logic ---
+        function moveButton() {
+            const btn = document.getElementById("noBtn");
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
+            btn.style.position = "fixed";
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+
+        function celebrate() {
+            alert("💖 Best decision ever! I love you! 💖");
+            for(let i=0; i<100; i++) setTimeout(createHeart, i * 30);
+        }
+
+        // --- Canvas Animation Logic ---
+        const canvas = document.getElementById("c");
+        const ctx = canvas.getContext("2d");
+        let x = 50, t = 0, p = 0, stopCount = 0, state = "idle";
+        const groundY = 330, mid = canvas.width/2;
+        const limb = 30, torsoHeight = 55, headR = 12;
+        const SUIT = "#1e272e", SHIRT = "#ffffff", SKIN = "#ffe0bd", TIE = "#d63031", HAT = "#000000";
+
+        function drawWalkingLeg(lx, ly, time) {
+            ctx.strokeStyle = SUIT; ctx.lineWidth = 10; ctx.lineCap = "round";
+            const angle = Math.sin(time) * 0.3;
+            const kx = lx + Math.sin(angle) * limb;
+            const ky = ly + Math.cos(angle) * limb;
+            ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(kx, ky);
+            ctx.lineTo(kx + (angle * 10), groundY); ctx.stroke();
+        }
+
+        function drawKneelingLeg(lx, ly, e, isBack) {
+            ctx.strokeStyle = SUIT; ctx.lineWidth = 11; ctx.lineCap = "round";
+            ctx.beginPath(); ctx.moveTo(lx, ly);
+            if (isBack) {
+                let kx = lx - (20 * e); let ky = ly + (35 * e);
+                ctx.lineTo(kx, ky); ctx.lineTo(kx - (10 * e), groundY);
+            } else {
+                let kx = lx + (25 * e); ctx.lineTo(kx, ly + (30 * e)); ctx.lineTo(kx, groundY);
+            }
+            ctx.stroke();
+        }
+
+        function drawBouquet(bx, by) {
+            ctx.fillStyle = "#f1c40f"; // Stem wrap
+            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx - 10, by - 20); ctx.lineTo(bx + 10, by - 20); ctx.fill();
+            ["#ff4d6d", "#ff85a1", "#ff0a54"].forEach((clr, idx) => {
+                ctx.fillStyle = clr; ctx.beginPath(); ctx.arc(bx - 8 + (idx * 8), by - 24, 6, 0, Math.PI * 2); ctx.fill();
+            });
+        }
+
+        function drawPerson() {
+            const ease = p * p * (3 - 2 * p);
+            const hipY = groundY - 65 + ease * 30;
+            const shoulderY = hipY - torsoHeight;
+            const armPivotY = shoulderY + 10;
+
+            if (state === "walk") { drawWalkingLeg(x, hipY, t); drawWalkingLeg(x, hipY, t + Math.PI); }
+            else if (state === "kneel" || state === "stop") { drawKneelingLeg(x, hipY, ease, true); drawKneelingLeg(x, hipY, ease, false); }
+            
+            ctx.fillStyle = SUIT; ctx.fillRect(x - 11, shoulderY, 22, torsoHeight - 5);
+            ctx.fillStyle = SHIRT; ctx.beginPath(); ctx.moveTo(x - 6, shoulderY); ctx.lineTo(x, shoulderY + 20); ctx.lineTo(x + 6, shoulderY); ctx.fill();
+            ctx.strokeStyle = TIE; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, shoulderY); ctx.lineTo(x, shoulderY + 12); ctx.stroke();
+
+            if (state === "walk") {
+                const angle = Math.sin(t) * 0.3;
+                ctx.strokeStyle = SUIT; ctx.lineWidth = 8;
+                ctx.beginPath(); ctx.moveTo(x, armPivotY); ctx.lineTo(x + Math.sin(angle)*limb, armPivotY + Math.cos(angle)*limb); ctx.stroke();
+            } else {
+                const hx = x + 40 * ease; const hy = armPivotY - 5 * ease;
+                ctx.strokeStyle = SUIT; ctx.lineWidth = 8;
+                ctx.beginPath(); ctx.moveTo(x, armPivotY); ctx.lineTo(x + 20*ease, armPivotY + 15*ease); ctx.lineTo(hx, hy); ctx.stroke();
+                if(state === "kneel") drawBouquet(hx, hy);
+            }
+
+            ctx.fillStyle = SKIN; ctx.beginPath(); ctx.arc(x, shoulderY - headR - 4, headR, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = HAT; ctx.fillRect(x - 16, shoulderY - headR - 14, 32, 4); ctx.fillRect(x - 10, shoulderY - headR - 32, 20, 18);
+        }
+
+        function loop() {
+            if (state === "idle") return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (state === "walk") {
+                x += 2.2; t += 0.15;
+                if (x >= mid) state = "stop";
+            } else if (state === "stop") {
+                stopCount++;
+                if (stopCount > 35) state = "kneel";
+            } else if (state === "kneel" && p < 1) p += 0.02;
+
+            drawPerson();
+            requestAnimationFrame(loop);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = ['❤️', '💖', '✨', '🌹', '💕'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+    </script>
+</body>
+</html>

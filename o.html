@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's day 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #000;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow-x: hidden; 
+    scroll-behavior: smooth;
+  }
+
+  /* --- PHASE 1 STYLES --- */
+  #phase1-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #FFC0CB, #D8BFD8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+
+  h1.main-title-p1 {
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 92, 124, 0.8);
+    z-index: 10;
+  }
+
+  #interaction-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: opacity 0.3s ease;
+  }
+
+  .heart-center {
+    width: 180px;
+    height: 180px;
+    filter: drop-shadow(0 0 20px #ff1c68);
+    animation: heartPulse 1.2s infinite ease-in-out;
+  }
+
+  @keyframes heartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .click-hint {
+    color: white;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: bold;
+    animation: hintFade 2s infinite;
+  }
+
+  @keyframes hintFade {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; color: #FFD700; }
+  }
+
+  .heart-snow {
+    position: fixed;
+    top: -50px;
+    pointer-events: none;
+    z-index: 5;
+    will-change: transform;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  #messageCard {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    width: 85%;
+    max-width: 400px;
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+    transition: all 0.8s ease-out;
+    z-index: 50;
+  }
+
+  #messageCard.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .message-text { font-size: 1.2rem; line-height: 1.6; min-height: 80px; }
+
+  #heart-animation {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .vortex-heart {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%) translate(var(--startX), var(--startY));
+    animation: explode var(--d) linear forwards;
+    will-change: transform, opacity;
+    font-size: var(--size);
+  }
+
+  @keyframes explode {
+    0% { transform: translate(-50%, -50%) translate(0, 0); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translate(var(--startX), var(--startY)); opacity: 0; }
+  }
+
+  .floating-pic {
+    position: absolute;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  /* --- PHASE 2 STYLES --- */
+  :root {
+      --flame-color: #ffd27d;
+      --flame-outer: #ff5e00;
+      --gold-text: linear-gradient(to bottom, #f7ef8a 0%, #d2ac47 45%, #edc967 70%, #bb9b32 100%);
+      --spotlight-size: 300px;
+      --velvet-red: #660000;
+      --rose-gold: #e7ac8a;
+      --gold: #ffd700;
+      --glow: rgba(255, 215, 0, 0.3);
+  }
+
+  #phase2-anchor {
+    height: 100vh;
+    width: 100%;
+    background-color: #050505;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Cinzel', serif;
+    transition: background-color 3s ease;
+  }
+
+  .spotlight-p2 {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle var(--spotlight-size) at var(--x, 50%) var(--y, 50%), transparent 10%, rgba(0,0,0,0.95) 100%);
+    z-index: 20;
+    transition: opacity 2s ease;
+  }
+
+  .candle-container { position: relative; z-index: 10; transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+  .candle { width: 30px; height: 120px; background: linear-gradient(to right, #4a020a, #800020, #4a020a); border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  
+  .flame {
+    position: absolute; top: -60px; left: 50%; transform: translateX(-50%) scale(0);
+    width: 20px; height: 50px; background: var(--flame-color); border-radius: 50% 50% 35% 35%;
+    box-shadow: 0 0 30px var(--flame-outer), 0 0 60px var(--flame-outer); opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: bottom center;
+  }
+
+  .is-lit .flame { opacity: 1; transform: translateX(-50%) scale(1); animation: flicker 0.1s infinite alternate; }
+  
+  .cinematic-message {
+    position: absolute; text-align: center; opacity: 0; transform: translateY(30px) scale(0.9);
+    transition: all 3.5s cubic-bezier(0.2, 1, 0.3, 1); z-index: 5; width: 90%;
+  }
+
+  .cinematic-message h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem); margin: 0; background: var(--gold-text);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 10px; text-transform: uppercase;
+  }
+
+  .is-blown .flame { opacity: 0 !important; transition: 0.1s; }
+  .is-blown.candle-container { transform: translateY(300px); opacity: 0; pointer-events: none; }
+  .is-blown ~ .cinematic-message { opacity: 1; transform: translateY(0) scale(1); }
+  .is-blown ~ .spotlight-p2 { opacity: 0.4; }
+
+  @keyframes flicker { 0% { opacity: 0.9; } 100% { opacity: 1; } }
+
+  /* --- PHASE 3 STYLES (NEW) --- */
+  #phase3-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #050101;
+    font-family: 'Playfair Display', serif;
+    overflow: hidden;
+  }
+
+  #phase3-section::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.2; z-index: 40; pointer-events: none;
+  }
+
+  .bars { position: absolute; left: 0; width: 100%; height: 10vh; background: #000; z-index: 1000; }
+  .top { top: 0; border-bottom: 1px solid #222; }
+  .bottom { bottom: 0; border-top: 1px solid #222; }
+
+  .spotlight-p3 {
+    position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 140%; background: radial-gradient(ellipse at top, rgba(231, 172, 138, 0.15) 0%, transparent 70%);
+    z-index: 1; pointer-events: none;
+  }
+
+  .stage { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+
+  .title-container { position: absolute; top: 15%; z-index: 100; text-align: center; width: 100%; }
+  .intro-text { color: var(--rose-gold); font-style: italic; font-size: 1rem; letter-spacing: 6px; opacity: 0; text-transform: uppercase; }
+  .main-title-p3 { 
+    font-size: clamp(40px, 8vw, 90px); margin: 15px 0; opacity: 0;
+    background: linear-gradient(to bottom, #fff 20%, var(--rose-gold) 50%, #b87333 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(231, 172, 138, 0.5)); transform: translateY(20px);
+  }
+
+  .love-note { font-family: 'Great Vibes', cursive; color: white; font-size: 2.5rem; opacity: 0; margin-top: 360px; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+  .script{
+  position:absolute;
+  top:45%;
+  color:var(--rose-gold);
+  font-style:italic;
+  font-size:1.2rem;
+  opacity:0;
+  z-index:110;
+  filter:blur(5px);
+  width:260px;
+}
+
+/* LEFT TEXT */
+#s1{
+  left:6%;
+  text-align:left;
+}
+
+/* RIGHT TEXT */
+#s2{
+  right:6%;
+  text-align:right;
+}
+
+  /* Trigger classes for Phase 3 animations */
+  .start-p3 .intro-text { animation: fadeIn 2s 8.5s forwards; }
+  .start-p3 .main-title-p3 { animation: smoothReveal 2.5s 9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  .start-p3 .love-note { animation: fadeIn 3s 11s forwards; }
+  .start-p3 #s1 { animation: focusPop 2s 1.5s forwards, fadeOut 1s 4.5s forwards; }
+  .start-p3 #s2 { animation: focusPop 2s 3.5s forwards, fadeOut 1s 5.5s forwards; }
+
+  .heart-container {
+    position: absolute; left: 50%; top: 50%; width: 250px; height: 250px;
+    transform: translate(-50%, -50%) scale(0); z-index: 60;
+  }
+  .start-p3 .heart-container {
+    animation: heartBurst 3s 7.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, heartBeat 2s 10.5s infinite ease-in-out;
+  }
+
+  .heart-image { width: 100%; height: 100%; object-fit: cover; clip-path: path('M110 210c-3-3-104-86-104-142 0-36 27-62 60-62 19 0 35 9 44 21 9-12 25-21 44-21 33 0 60 26 60 62 0 56-101 139-104 142z'); border: 4px solid var(--rose-gold); box-shadow: 0 0 50px var(--glow); }
+
+  .gift-box { position: absolute; left: 50%; top: -100px; width: 70px; height: 70px; background: var(--velvet-red); z-index: 70; transform: translateX(-50%) rotate(-10deg); }
+  .start-p3 .gift-box { animation: deliverBox 2.5s 5.5s cubic-bezier(0.17, 0.88, 0.32, 1.2) forwards, fadeOut 0.4s 7.5s forwards; }
+
+  .gift-box::before { content: ""; position: absolute; left: 42%; width: 12px; height: 100%; background: var(--gold); }
+  .gift-box::after { content: ""; position: absolute; top: 42%; width: 100%; height: 12px; background: var(--gold); }
+
+  .man { position: absolute; bottom: 15%; width: 120px; height: 200px; z-index: 80; }
+  .left-man { left: -150px; }
+  .right-man { right: -150px; }
+  .start-p3 .left-man { animation: walkInL 4s 0.5s forwards; }
+  .start-p3 .right-man { animation: walkInR 4s 0.5s forwards; }
+
+  line, circle { stroke: var(--rose-gold); stroke-width: 4; fill: none; }
+
+  @keyframes focusPop { 50% { opacity: 1; filter: blur(0px); transform: scale(1.1); } 100% { opacity: 0.8; filter: blur(1px); transform: scale(1); } }
+  @keyframes deliverBox { to { top: 50%; transform: translate(-50%, -50%) rotate(0deg); } }
+  @keyframes walkInL { 100% { left: calc(50% - 200px); } }
+  @keyframes walkInR { 100% { right: calc(50% - 200px); } }
+  @keyframes heartBurst { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 40px #ff4d6d); } }
+  @keyframes heartBeat { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }
+  @keyframes smoothReveal { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+  .particle { position: absolute; background: var(--gold); border-radius: 50%; pointer-events: none; opacity: 0; animation: fly 10s infinite linear; }
+  @keyframes fly { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
+ 
+</style>
+</head>
+<body>
+
+<div id="heart-animation"></div>
+
+<div id="phase1-section">
+  <h1 class="main-title-p1">Valentine's day 🎉</h1>
+  <div id="interaction-group" onclick="startSequence()">
+    <svg class="heart-center" viewBox="0 0 24 24">
+      <path fill="#ff1c68" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <div class="click-hint">💖 Press to Start 💖</div>
+  </div>
+  <div id="messageCard">
+    <div class="message-text" id="typewriterText"></div>
+  </div>
+</div>
+
+<div id="phase2-anchor">
+    <div class="spotlight-p2" id="spotlight"></div>
+    <div id="particles-container"></div>
+    <div class="candle-container" id="candleBox">
+        <div class="flame"></div>
+        <div class="candle"></div>
+    </div>
+    <div class="cinematic-message">
+        <p style="color: #d2ac47; letter-spacing: 5px; text-transform: uppercase;">Now Presenting</p>
+        <h1>Valentine's day</h1>
+        <p style="color: #d2ac47; letter-spacing: 5px; text-transform: uppercase;">To the leading lady of my heart</p>
+    </div>
+</div>
+
+<div id="phase3-section">
+    <div class="spotlight-p3"></div>
+    <div class="bars top"></div>
+    <div class="bars bottom"></div>
+    <div class="stage">
+        <div class="script" id="s1">In a world full of stars...</div>
+        <div class="script" id="s2">Only one shines the brightest.</div>
+        <div class="title-container">
+            <div class="intro-text">A Special Feature Presentation</div>
+            <h1 class="main-title-p3">Valentine's day 💗💐</h1>
+            <div class="love-note">...the star of my life.</div>
+        </div>
+        <div class="heart-container">
+            <img src="m.jpg" alt="M" class="heart-image">
+        </div>
+        <div class="gift-box"></div>
+        <svg class="man left-man" viewBox="0 0 140 220">
+            <circle cx="70" cy="25" r="18"/>
+            <line x1="70" y1="43" x2="70" y2="130"/>
+            <line x1="70" y1="130" x2="50" y2="190"/><line x1="70" y1="130" x2="90" y2="190"/>
+            <line x1="70" y1="75" x2="115" y2="85" />
+        </svg>
+        <svg class="man right-man" viewBox="0 0 140 220">
+            <circle cx="70" cy="25" r="18"/>
+            <line x1="70" y1="43" x2="70" y2="130"/>
+            <line x1="70" y1="130" x2="50" y2="190"/><line x1="70" y1="130" x2="90" y2="190"/>
+            <line x1="70" y1="75" x2="25" y2="85" />
+        </svg>
+    </div>
+</div>
+
+
+<audio id="bgMusic" loop src="mm.mp3"></audio>
+<audio id="blowSfx" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+
+<script>
+const music = document.getElementById('bgMusic');
+const blowSfx = document.getElementById('blowSfx');
+
+const msg = "To someone very special,\n\nMay your day be filled with as much love and joy as you bring into the world. ✨";
+const vortexContainer = document.getElementById('heart-animation');
+
+/* ❤️ HEART SNOW */
+function createSnow(){
+ const snow = document.createElement('div');
+ snow.className = 'heart-snow';
+ const icons = ['❤️','💗','💕','🤍'];
+ snow.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+ const size = Math.random()*20+10;
+ const startX = Math.random()*100;
+ const duration = Math.random()*5+5;
+ const delay = Math.random()*-10;
+ snow.style.left = startX+'vw';
+ snow.style.fontSize = size+'px';
+ snow.style.opacity = Math.random()*0.7+0.3;
+ snow.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+ document.body.appendChild(snow);
+}
+for(let i=0; i<40; i++){ createSnow(); }
+
+/* 🎈 BALLOONS */
+function burstPhotos(){
+ const photoCount = 3;
+ const bottomY = window.innerHeight;
+ const randomID = Math.random().toString(36).substring(7);
+
+ for(let i=0; i<photoCount; i++){
+  const container = document.createElement('div');
+  container.className = 'floating-pic';
+  const finalSize = 70+Math.random()*50;
+  container.style.width = finalSize+'px';
+  container.style.height = finalSize+'px';
+  const spawnX = Math.random()*(window.innerWidth-finalSize);
+  container.style.left = spawnX+'px';
+  container.style.top = bottomY+'px';
+
+  container.innerHTML = `
+  <svg viewBox="0 0 32 29.6" width="100%" height="100%">
+   <defs>
+    <clipPath id="balloonClip_${randomID}_${i}">
+     <path d="M23.6,0c-2.9,0-5.6,1.5-7.6,3.9C13.9,1.5,11.2,0,8.3,0C3.7,0,0,3.7,0,8.3c0,4.3,3.4,7.8,8.5,12.6L16,29.6l7.5-8.7c5.1-4.8,8.5-8.3,8.5-12.6C32,3.7,28.3,0,23.6,0z"/>
+    </clipPath>
+   </defs>
+   <image href="m.jpg" clip-path="url(#balloonClip_${randomID}_${i})" width="32" height="29.6" preserveAspectRatio="xMidYMid slice"></image>
+  </svg>`;
+
+  document.body.appendChild(container);
+  let currentY = bottomY;
+  const upwardSpeed = Math.random()*1.2+0.8;
+  let opacity = 1;
+
+  function animate(){
+   currentY -= upwardSpeed;
+   const sway = Math.sin(currentY/60)*1.5;
+   container.style.transform = `translateY(${currentY-bottomY}px) translateX(${sway}px)`;
+   if(currentY < window.innerHeight*0.4){
+    opacity -= 0.003;
+    container.style.opacity = opacity;
+   }
+   if(currentY < -finalSize || opacity <= 0){
+    container.remove();
+    return;
+   }
+   requestAnimationFrame(animate);
+  }
+  animate();
+ }
+ setTimeout(burstPhotos, 1500);
+}
+
+/* 💖 HEART VORTEX */
+function startVortex(){
+ let vortexInterval = setInterval(()=>{
+  for(let i=0; i<12; i++){
+   const h = document.createElement('div');
+   h.className = 'vortex-heart';
+   h.innerHTML = '💖 💗';
+   const angle = Math.random()*Math.PI*2;
+   const distance = Math.random()*Math.max(window.innerWidth, window.innerHeight)/1.5;
+   h.style.setProperty('--startX',`${Math.cos(angle)*distance}px`);
+   h.style.setProperty('--startY',`${Math.sin(angle)*distance}px`);
+   h.style.setProperty('--d','0.8s');
+   h.style.setProperty('--size','15px');
+   vortexContainer.appendChild(h);
+   setTimeout(()=>h.remove(), 800);
+  }
+ }, 60);
+ setTimeout(()=>{
+  clearInterval(vortexInterval);
+  burstPhotos();
+ }, 2000);
+}
+
+/* 🎬 MAIN SEQUENCE */
+function startSequence(){
+ // Start the single music track here
+ music.play().catch(e => console.log("Audio play blocked until interaction"));
+ 
+ startVortex();
+ document.getElementById('interaction-group').style.opacity = '0';
+ document.getElementById('interaction-group').style.pointerEvents = 'none';
+
+ setTimeout(()=>{
+  document.getElementById('messageCard').classList.add('show');
+  typeWriter(msg, 0, ()=>{
+   setTimeout(cinematicScrollToP2, 1000);
+  });
+ }, 3000);
+}
+
+function typeWriter(text, i, cb){
+ if(i < text.length){
+  document.getElementById('typewriterText').innerHTML += 
+   text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+  setTimeout(() => typeWriter(text, i + 1, cb), 4000/text.length);
+ } else if(cb) cb();
+}
+
+function cinematicScrollToP2(){
+ const target = document.getElementById('phase2-anchor').offsetTop;
+ window.scrollTo({top: target, behavior: 'smooth'});
+ setTimeout(triggerPhase2, 2000);
+}
+
+function triggerPhase2(){
+ const candle = document.getElementById('candleBox');
+ setTimeout(()=>{
+  candle.classList.add('is-lit');
+  setTimeout(()=>{
+   candle.classList.add('is-blown');
+   blowSfx.play();
+   setTimeout(()=>{
+    // Music continues playing throughout Phase 3
+    document.getElementById('phase3-section').classList.add('start-p3');
+    const target3 = document.getElementById('phase3-section').offsetTop;
+    window.scrollTo({top: target3, behavior: 'smooth'});
+   }, 5000);
+  }, 3000);
+ }, 1000);
+}
+</script>
+</body>
+</html>
